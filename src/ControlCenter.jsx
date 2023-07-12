@@ -22,7 +22,7 @@ const ControlCenter = ({
     const barAreaContainer = document.querySelector('.bar-area')
     const barAreaHeight = barAreaContainer.clientHeight
     setAdditionalInfoProps({})
-    resetBarStyle()
+    setBarsAsUnsorted()
     setInputArray(CreateRandomArray(arraySize, barAreaHeight))
   }, [arraySize])
 
@@ -66,37 +66,62 @@ const ControlCenter = ({
     setSortingSpeed(defaultSortingSpeed)
   }, [])
 
+  // handler
   const handleRandomize = () => {
     if (!isSortingHappening) {
       const barAreaContainer = document.querySelector('.bar-area')
       const barAreaHeight = barAreaContainer.clientHeight
       setInputArray(CreateRandomArray(arraySize, barAreaHeight))
       setAdditionalInfoProps({})
-      resetBarStyle()
+      setBarsAsUnsorted()
     }
   }
 
+  // handler
   const handleArraySizeChange = (inputArraySize) => {
     if (inputArraySize >= 0 && inputArraySize <= 200) {
       setArraySize(inputArraySize)
     }
   }
 
+  // handler
   const handleAlgorithmSelectorChange = (algorithm) => {
     setSelectedAlgorithm(algorithm)
   }
 
+  // handler
   const handleSortingSpeedChange = (speed) => {
     setSortingSpeed(SortingSpeedOptions[speed].value)
   }
 
-  const resetBarStyle = () => {
+  // handler
+  const handleSort = () => {
+    if (!isSortingHappening) {
+      let tempInputArray = [...inputArray]
+      let sortingGenerator
+      if (selectedAlgorithm === 'insertionSort') {
+        sortingGenerator = InsertionSortGenerator(tempInputArray)
+      } else if (selectedAlgorithm === 'heapSort') {
+        sortingGenerator = HeapSortGenerator(tempInputArray)
+      } else if (selectedAlgorithm === 'mergeSort') {
+        sortingGenerator = MergeSortGenerator(tempInputArray)
+      } else if (selectedAlgorithm === 'quickSort') {
+        sortingGenerator = QuickSortGenerator(tempInputArray)
+      }
+      setIsSortingHappening(true)
+      updateArrayWithDelay(sortingGenerator)
+    }
+  }
+
+  // side effect
+  const setBarsAsUnsorted = () => {
     const bars = document.querySelectorAll('.bar')
     for (let bar of bars) {
       bar.className = 'bar'
     }
   }
 
+  // side effect
   const animateBarsAsSorted = () => {
     const bars = document.querySelectorAll('.bar')
     const animateBarAsSorted = (bars, index) => {
@@ -112,6 +137,7 @@ const ControlCenter = ({
     animateBarAsSorted(bars, 0)
   }
 
+  // side effect
   const updateArrayWithDelay = (generator) => {
     const { done, value } = generator.next()
     if (!done) {
@@ -134,24 +160,6 @@ const ControlCenter = ({
       }, sortingSpeed)
     } else {
       animateBarsAsSorted()
-    }
-  }
-
-  const handleSort = () => {
-    if (!isSortingHappening) {
-      let tempInputArray = [...inputArray]
-      let sortingGenerator
-      if (selectedAlgorithm === 'insertionSort') {
-        sortingGenerator = InsertionSortGenerator(tempInputArray)
-      } else if (selectedAlgorithm === 'heapSort') {
-        sortingGenerator = HeapSortGenerator(tempInputArray)
-      } else if (selectedAlgorithm === 'mergeSort') {
-        sortingGenerator = MergeSortGenerator(tempInputArray)
-      } else if (selectedAlgorithm === 'quickSort') {
-        sortingGenerator = QuickSortGenerator(tempInputArray)
-      }
-      setIsSortingHappening(true)
-      updateArrayWithDelay(sortingGenerator)
     }
   }
 
