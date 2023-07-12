@@ -133,6 +133,21 @@ function* MergeSortGenerator(array) {
       k++
     }
   }
+  snapshot = takeSnapshot(
+    comparisons,
+    mainArrayWrites,
+    auxiliaryArrayWrites,
+    [...array],
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  )
+  yield snapshot
 }
 
 function takeSnapshot(
