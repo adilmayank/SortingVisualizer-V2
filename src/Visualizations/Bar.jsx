@@ -1,5 +1,7 @@
 import { memo } from 'react'
 
+
+// Container
 const Bar = ({
   selectedAlgorithm,
   additionalInfoProps,
@@ -48,7 +50,6 @@ const Bar = ({
   }
   classNamesString = classNamesList.join(' ')
 
-
   return (
     <BarPure
       classNames={classNamesString}
@@ -59,7 +60,9 @@ const Bar = ({
   )
 }
 
+// Presentational
 const BarPure = memo(({ classNames, height, width }) => {
+  console.log('rendering bar', classNames)
   return (
     <>
       <div
