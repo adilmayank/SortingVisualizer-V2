@@ -8,7 +8,7 @@ const VisualizationContainer = ({
 }) => {
   return (
     <>
-      <div className="visuzalization-container grid grid-cols-12 my-14 w-5/6 h-full">
+      <div className="visuzalization-container grid grid-cols-12 my-14 w-full h-full">
         <PrimaryVisualizationContainer
           selectedAlgorithm={selectedAlgorithm}
           inputArray={inputArray}
