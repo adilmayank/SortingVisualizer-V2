@@ -62,7 +62,6 @@ const Bar = ({
 
 // Presentational
 const BarPure = memo(({ classNames, height, width }) => {
-  console.log('rendering bar', classNames)
   return (
     <>
       <div
