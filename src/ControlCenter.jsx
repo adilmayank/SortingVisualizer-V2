@@ -119,22 +119,22 @@ const ControlCenter = ({
     const bars = document.querySelectorAll('.bar')
     const heaps = document.querySelectorAll('.heap')
     for (let bar of bars) {
-      bar.setAttribute("class", "bar")
+      bar.setAttribute('class', 'bar')
     }
     for (let heap of heaps) {
-      heap.setAttribute("class", "heap")
+      heap.setAttribute('class', 'heap')
     }
   }
 
   // side effect
-  const animateBarsAsSorted = () => {
+  const animateAsSorted = () => {
     const bars = document.querySelectorAll('.bar')
     const heaps = document.querySelectorAll('.heap')
     const animateBarAsSorted = (bars, index) => {
       if (index < bars.length) {
         setTimeout(() => {
-          bars[index].setAttribute("class",'bar sorted' ) 
-          heaps[index].setAttribute("class", "heap sorted")
+          bars[index].setAttribute('class', 'bar sorted')
+          heaps.length > 0 && heaps[index].setAttribute('class', 'heap sorted')
           animateBarAsSorted(bars, index + 1)
         }, 1000 / bars.length)
       } else {
@@ -166,8 +166,8 @@ const ControlCenter = ({
         updateArrayWithDelay(generator)
       }, sortingSpeed)
     } else {
-      setNotification('Array is sorted')
-      animateBarsAsSorted()
+      animateAsSorted()
+      // setNotification('Array is sorted')
     }
   }
 
