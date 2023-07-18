@@ -112,20 +112,21 @@ const HeapContainer = ({ inputArray, additionalInfoProps }) => {
     setCirclePositions(tempCirclePositions)
     setLinePositions(tempLinePositions)
   }, [inputArray])
-
   return (
     <svg className="h-full w-full" ref={svgRef}>
       {linePositions.length > 0 &&
         linePositions.map((linePosition, index) => {
+          const lineKey = `line_${index}`
           return (
             <>
-              <Edge index={index} position={linePosition} key={index} />
+              <Edge index={index} position={linePosition} key={lineKey} />
             </>
           )
         })}
       {circlePositions.length > 0 &&
         circlePositions.map((circlePosition, index) => {
           const classNamesList = ['heap']
+          const nodeKey = `node_${index}`
           if (heapSize && index >= heapSize) {
             classNamesList.push('heap-out-of-bound')
           } else if (parentIndex === index) {
@@ -138,7 +139,7 @@ const HeapContainer = ({ inputArray, additionalInfoProps }) => {
           return (
             <>
               <Node
-                key={index}
+                key={nodeKey}
                 value={inputArray[index]}
                 radius={radius}
                 position={circlePosition}
