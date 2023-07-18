@@ -1,15 +1,21 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, memo } from 'react'
 
 const Heap = ({ inputArray, additionalInfoProps }) => {
-  if (inputArray.length > 30) {
+  if (inputArray.length > 30 || inputArray.length < 10) {
+    const errorMessage =
+      inputArray.length > 30
+        ? '❌ Heap Too Big ❌'
+        : inputArray.length < 10
+        ? '❌ Heap Too Small ❌'
+        : ''
     return (
       <>
         <div className="h-full w-full flex flex-col justify-center items-center">
           <p className="font-bold uppercase my-1 flex justify-center p-1 text-center lg:text-lg sm:text-md xl:text-xl ">
-            ❌ Heap Too Big ❌
+            {errorMessage}
           </p>
           <p className="text-md uppercase flex justify-center p-1 text-center my-1">
-            Input array must be less than 30
+            Input array must be less than 30 and more than 10
           </p>
         </div>
       </>
@@ -109,24 +115,35 @@ const HeapContainer = ({ inputArray, additionalInfoProps }) => {
 
   return (
     <svg className="h-full w-full" ref={svgRef}>
-      {circlePositions.length > 0 &&
-        circlePositions.map((circlePosition, index) => {
-          return (
-            <>
-              <Node
-                key={index}
-                radius={radius}
-                position={circlePosition}
-                className={''}
-              />
-            </>
-          )
-        })}
       {linePositions.length > 0 &&
         linePositions.map((linePosition, index) => {
           return (
             <>
-              <Edge index={index} position={linePosition} />
+              <Edge index={index} position={linePosition} key={index} />
+            </>
+          )
+        })}
+      {circlePositions.length > 0 &&
+        circlePositions.map((circlePosition, index) => {
+          const classNamesList = ['heap']
+          if (heapSize && index >= heapSize) {
+            classNamesList.push('heap-out-of-bound')
+          } else if (parentIndex === index) {
+            classNamesList.push('heap-parent')
+          } else if (leftChildIndex === index) {
+            classNamesList.push('heap-left-child')
+          } else if (rightChildIndex === index) {
+            classNamesList.push('heap-right-child')
+          }
+          return (
+            <>
+              <Node
+                key={index}
+                value={inputArray[index]}
+                radius={radius}
+                position={circlePosition}
+                className={classNamesList.join(' ')}
+              />
             </>
           )
         })}
@@ -142,7 +159,7 @@ function getRightChildIndex(parentIndex, arraySize) {
   return 2 * parentIndex + 2 < arraySize && 2 * parentIndex + 2
 }
 
-const Node = ({ position, radius, className }) => {
+const Node = memo(({ value, position, radius, className }) => {
   return (
     <>
       <circle
@@ -151,11 +168,21 @@ const Node = ({ position, radius, className }) => {
         cx={position.x_pos}
         cy={position.y_pos}
       ></circle>
+      <text
+        x={position.x_pos}
+        y={position.y_pos}
+        textAnchor="middle"
+        dominantBaseline={'middle'}
+        fill="white"
+        fontSize={`${radius * 0.8}px`}
+      >
+        {value}
+      </text>
     </>
   )
-}
+})
 
-const Edge = ({ position }) => {
+const Edge = memo(({ position }) => {
   return (
     <>
       <line
@@ -168,8 +195,5 @@ const Edge = ({ position }) => {
       ></line>
     </>
   )
-}
-
-const NodeConnector = () => {}
-
+})
 export default Heap
