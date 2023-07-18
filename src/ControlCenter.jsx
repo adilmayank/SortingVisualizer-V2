@@ -17,6 +17,7 @@ const ControlCenter = ({
   setAdditionalInfoProps,
   isSortingHappening,
   setIsSortingHappening,
+  setNotification,
 }) => {
   useEffect(() => {
     const barAreaContainer = document.querySelector('.bar-area')
@@ -116,18 +117,24 @@ const ControlCenter = ({
   // side effect
   const setBarsAsUnsorted = () => {
     const bars = document.querySelectorAll('.bar')
+    const heaps = document.querySelectorAll('.heap')
     for (let bar of bars) {
-      bar.className = 'bar'
+      bar.setAttribute("class", "bar")
+    }
+    for (let heap of heaps) {
+      heap.setAttribute("class", "heap")
     }
   }
 
   // side effect
   const animateBarsAsSorted = () => {
     const bars = document.querySelectorAll('.bar')
+    const heaps = document.querySelectorAll('.heap')
     const animateBarAsSorted = (bars, index) => {
       if (index < bars.length) {
         setTimeout(() => {
-          bars[index].className = 'bar sorted'
+          bars[index].setAttribute("class",'bar sorted' ) 
+          heaps[index].setAttribute("class", "heap sorted")
           animateBarAsSorted(bars, index + 1)
         }, 1000 / bars.length)
       } else {
@@ -159,13 +166,14 @@ const ControlCenter = ({
         updateArrayWithDelay(generator)
       }, sortingSpeed)
     } else {
+      setNotification('Array is sorted')
       animateBarsAsSorted()
     }
   }
 
   return (
     <>
-      <div className="control-center-container px-2 py-2 frosted justify-center rounded-lg flex w-5/6">
+      <div className="control-center-container px-2 py-2 frosted justify-center rounded-lg flex w-full">
         <div className="control-center p-4 grid grid-cols-4 w-full">
           <div className="algorithm-selector-container w-full">
             <div className="algorithm-selector w-4/6 flex flex-col">
