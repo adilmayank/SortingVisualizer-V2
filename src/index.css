@@ -77,4 +77,25 @@
       #e2e2e2
     );
   }
+  .toast {
+    animation: fadein 3s cubic-bezier(0.075, 0.82, 0.165, 1);
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes fadein {
+    0% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+
 }
