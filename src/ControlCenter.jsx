@@ -70,7 +70,6 @@ const ControlCenter = ({
 
   // handler
   const notifyUser = (message) => {
-    console.log(message)
     setNotification(message)
   }
 
@@ -107,7 +106,6 @@ const ControlCenter = ({
     if (!isSortingHappening) {
       let tempInputArray = [...inputArray]
       if (CheckIfArrayIsSorted(inputArray)) {
-        console.log(tempInputArray)
         notifyUser("Array is already sorted 😉")
       } else {
         let sortingGenerator
