@@ -4,6 +4,7 @@ import InsertionSortGenerator from './Algorithms/InsertionSort'
 import HeapSortGenerator from './Algorithms/HeapSort'
 import MergeSortGenerator from './Algorithms/MergeSort'
 import QuickSortGenerator from './Algorithms/QuickSort'
+import CheckIfArrayIsSorted from './Utils/CheckIfAlreadySorted'
 
 const ControlCenter = ({
   inputArray,
@@ -68,6 +69,12 @@ const ControlCenter = ({
   }, [])
 
   // handler
+  const notifyUser = (message) => {
+    console.log(message)
+    setNotification(message)
+  }
+
+  // handler
   const handleRandomize = () => {
     if (!isSortingHappening) {
       const barAreaContainer = document.querySelector('.bar-area')
@@ -99,18 +106,23 @@ const ControlCenter = ({
   const handleSort = () => {
     if (!isSortingHappening) {
       let tempInputArray = [...inputArray]
-      let sortingGenerator
-      if (selectedAlgorithm === 'insertionSort') {
-        sortingGenerator = InsertionSortGenerator(tempInputArray)
-      } else if (selectedAlgorithm === 'heapSort') {
-        sortingGenerator = HeapSortGenerator(tempInputArray)
-      } else if (selectedAlgorithm === 'mergeSort') {
-        sortingGenerator = MergeSortGenerator(tempInputArray)
-      } else if (selectedAlgorithm === 'quickSort') {
-        sortingGenerator = QuickSortGenerator(tempInputArray)
+      if (CheckIfArrayIsSorted(inputArray)) {
+        console.log(tempInputArray)
+        notifyUser("Array is already sorted 😉")
+      } else {
+        let sortingGenerator
+        if (selectedAlgorithm === 'insertionSort') {
+          sortingGenerator = InsertionSortGenerator(tempInputArray)
+        } else if (selectedAlgorithm === 'heapSort') {
+          sortingGenerator = HeapSortGenerator(tempInputArray)
+        } else if (selectedAlgorithm === 'mergeSort') {
+          sortingGenerator = MergeSortGenerator(tempInputArray)
+        } else if (selectedAlgorithm === 'quickSort') {
+          sortingGenerator = QuickSortGenerator(tempInputArray)
+        }
+        setIsSortingHappening(true)
+        updateArrayWithDelay(sortingGenerator)
       }
-      setIsSortingHappening(true)
-      updateArrayWithDelay(sortingGenerator)
     }
   }
 
@@ -167,7 +179,7 @@ const ControlCenter = ({
       }, sortingSpeed)
     } else {
       animateAsSorted()
-      // setNotification('Array is sorted')
+      notifyUser('Array is sorted')
     }
   }
 
